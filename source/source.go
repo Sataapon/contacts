@@ -13,25 +13,25 @@ type Ticket struct {
 	Contacts int    `json:"Contacts"`
 }
 
-type Dataset struct {
+type Source struct {
 	tickets []Ticket
 }
 
-func New(path string) Dataset {
+func New(path string) Source {
 	bytes, err := ioutil.ReadFile(path)
 	check(err)
 	tickets := make([]Ticket, 0)
 	err = json.Unmarshal(bytes, &tickets)
 	check(err)
-	return Dataset{tickets: tickets}
+	return Source{tickets: tickets}
 }
 
-func (d Dataset) Length() int {
-	return len(d.tickets)
+func (s Source) Length() int {
+	return len(s.tickets)
 }
 
-func (d Dataset) Tickets() []Ticket {
-	return d.tickets
+func (s Source) Tickets() []Ticket {
+	return s.tickets
 }
 
 func check(e error) {

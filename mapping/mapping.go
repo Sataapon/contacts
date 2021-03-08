@@ -21,24 +21,24 @@ type OrderId struct {
 	data map[string][]int
 }
 
-func NewEmail(dataset source.Dataset) Email {
-	return Email{data: mappingData(dataset.Tickets(), channel.Email)}
+func NewEmail(source source.Source) Email {
+	return Email{data: mappingData(source.Tickets(), channel.Email)}
 }
 
 func (e Email) GetMapping() map[string][]int {
 	return e.data
 }
 
-func NewPhone(dataset source.Dataset) Phone {
-	return Phone{data: mappingData(dataset.Tickets(), channel.Phone)}
+func NewPhone(source source.Source) Phone {
+	return Phone{data: mappingData(source.Tickets(), channel.Phone)}
 }
 
 func (p Phone) GetMapping() map[string][]int {
 	return p.data
 }
 
-func NewOrderId(dataset source.Dataset) OrderId {
-	return OrderId{data: mappingData(dataset.Tickets(), channel.OrderId)}
+func NewOrderId(source source.Source) OrderId {
+	return OrderId{data: mappingData(source.Tickets(), channel.OrderId)}
 }
 
 func (o OrderId) GetMapping() map[string][]int {
