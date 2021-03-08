@@ -7,20 +7,19 @@ import (
 )
 
 type Graph struct {
-	adj []map[int]bool
+	adj     []map[int]bool
+	visited []bool
 }
 
 func New(size int) Graph {
-	return Graph{adj: emptyAdj(size)}
+	return Graph{
+		adj:     emptyAdj(size),
+		visited: make([]bool, size),
+	}
 }
-
-func (g Graph) Adj() []map[int]bool {
-	return g.adj
-}
-
-func (g Graph) AddEdges(dataset source.Dataset, mapper mapping.Mapper, ch channel.Type) {
+func (g Graph) AddEdges(source source.Source, mapper mapping.Mapper, ch channel.Type) {
 	mapping := mapper.GetMapping()
-	for _, ticket := range dataset.Tickets() {
+	for _, ticket := range source.Tickets() {
 		var ids []int
 		switch ch {
 		case channel.Email:
@@ -31,14 +30,33 @@ func (g Graph) AddEdges(dataset source.Dataset, mapper mapping.Mapper, ch channe
 			ids = mapping[ticket.OrderId]
 		}
 		for _, id := range ids {
-			customAdd(g.adj, ticket.Id, id)
+			if ticket.Id != id {
+				g.adj[ticket.Id][id] = true
+			}
 		}
 	}
 }
 
-func customAdd(adj []map[int]bool, idx, key int) {
-	if idx != key {
-		adj[idx][key] = true
+func (g Graph) ConnectedComponents() [][]int {
+	var connectedComponents [][]int
+	for i := range g.adj {
+		var ids []int
+		g.dfs(&ids, i)
+		if ids != nil {
+			connectedComponents = append(connectedComponents, ids)
+		}
+	}
+	return connectedComponents
+}
+
+func (g Graph) dfs(ids *[]int, idx int) {
+	if g.visited[idx] {
+		return
+	}
+	g.visited[idx] = true
+	*ids = append(*ids, idx)
+	for i := range g.adj[idx] {
+		g.dfs(ids, i)
 	}
 }
 
