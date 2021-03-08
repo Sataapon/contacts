@@ -34,6 +34,10 @@ func (s Source) Tickets() []Ticket {
 	return s.tickets
 }
 
+func (s Source) Contacts(id int) int {
+	return s.tickets[id].Contacts
+}
+
 func check(e error) {
 	if e != nil {
 		panic(e)
