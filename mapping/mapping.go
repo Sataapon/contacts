@@ -1,6 +1,8 @@
 package mapping
 
 import (
+	"strings"
+
 	"github.com/Sataapon/contacts/channel"
 	"github.com/Sataapon/contacts/source"
 )
@@ -67,5 +69,5 @@ func customAdd(data map[string][]int, key string, val int) {
 }
 
 func isNotSpace(s string) bool {
-	return s != ""
+	return strings.TrimSpace(s) != ""
 }

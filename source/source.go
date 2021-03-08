@@ -34,8 +34,8 @@ func (s Source) Tickets() []Ticket {
 	return s.tickets
 }
 
-func (s Source) Contacts(id int) int {
-	return s.tickets[id].Contacts
+func (s Source) Contacts(idx int) int {
+	return s.tickets[idx].Contacts
 }
 
 func check(e error) {

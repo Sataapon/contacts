@@ -17,6 +17,7 @@ func New(size int) Graph {
 		visited: make([]bool, size),
 	}
 }
+
 func (g Graph) AddEdges(source source.Source, mapper mapping.Mapper, ch channel.Type) {
 	mapping := mapper.GetMapping()
 	for _, ticket := range source.Tickets() {
