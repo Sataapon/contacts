@@ -34,12 +34,22 @@ func mappingData(tickets []dataset.Ticket, ch channel.Type) map[string][]int {
 	for _, v := range tickets {
 		switch ch {
 		case channel.Email:
-			data[v.Email] = append(data[v.Email], v.Id)
+			customAdd(data, v.Email, v.Id)
 		case channel.Phone:
-			data[v.Phone] = append(data[v.Phone], v.Id)
+			customAdd(data, v.Phone, v.Id)
 		case channel.OrderId:
-			data[v.OrderId] = append(data[v.OrderId], v.Id)
+			customAdd(data, v.OrderId, v.Id)
 		}
 	}
 	return data
+}
+
+func customAdd(data map[string][]int, key string, val int) {
+	if isNotSpace(key) {
+		data[key] = append(data[key], val)
+	}
+}
+
+func isNotSpace(s string) bool {
+	return s != ""
 }
