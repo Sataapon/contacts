@@ -2,8 +2,12 @@ package mapping
 
 import (
 	"github.com/Sataapon/contacts/channel"
-	dataset "github.com/Sataapon/contacts/tickets"
+	"github.com/Sataapon/contacts/source"
 )
+
+type Mapper interface {
+	GetMapping() map[string][]int
+}
 
 type Email struct {
 	data map[string][]int
@@ -17,19 +21,31 @@ type OrderId struct {
 	data map[string][]int
 }
 
-func NewEmail(dataset dataset.Dataset) Email {
-	return Email{data: mappingData(dataset.Tickets, channel.Email)}
+func NewEmail(dataset source.Dataset) Email {
+	return Email{data: mappingData(dataset.Tickets(), channel.Email)}
 }
 
-func NewPhone(dataset dataset.Dataset) Phone {
-	return Phone{data: mappingData(dataset.Tickets, channel.Phone)}
+func (e Email) GetMapping() map[string][]int {
+	return e.data
 }
 
-func NewOrderId(dataset dataset.Dataset) OrderId {
-	return OrderId{data: mappingData(dataset.Tickets, channel.OrderId)}
+func NewPhone(dataset source.Dataset) Phone {
+	return Phone{data: mappingData(dataset.Tickets(), channel.Phone)}
 }
 
-func mappingData(tickets []dataset.Ticket, ch channel.Type) map[string][]int {
+func (p Phone) GetMapping() map[string][]int {
+	return p.data
+}
+
+func NewOrderId(dataset source.Dataset) OrderId {
+	return OrderId{data: mappingData(dataset.Tickets(), channel.OrderId)}
+}
+
+func (o OrderId) GetMapping() map[string][]int {
+	return o.data
+}
+
+func mappingData(tickets []source.Ticket, ch channel.Type) map[string][]int {
 	data := make(map[string][]int)
 	for _, v := range tickets {
 		switch ch {
