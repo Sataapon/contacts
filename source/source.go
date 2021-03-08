@@ -1,4 +1,4 @@
-package dataset
+package source
 
 import (
 	"encoding/json"
@@ -14,7 +14,7 @@ type Ticket struct {
 }
 
 type Dataset struct {
-	Tickets []Ticket
+	tickets []Ticket
 }
 
 func New(path string) Dataset {
@@ -23,7 +23,15 @@ func New(path string) Dataset {
 	tickets := make([]Ticket, 0)
 	err = json.Unmarshal(bytes, &tickets)
 	check(err)
-	return Dataset{Tickets: tickets}
+	return Dataset{tickets: tickets}
+}
+
+func (d Dataset) Length() int {
+	return len(d.tickets)
+}
+
+func (d Dataset) Tickets() []Ticket {
+	return d.tickets
 }
 
 func check(e error) {
