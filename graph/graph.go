@@ -14,12 +14,8 @@ func New(size int) Graph {
 	return Graph{adj: emptyAdj(size)}
 }
 
-func emptyAdj(size int) []map[int]bool {
-	adj := make([]map[int]bool, size)
-	for i := range adj {
-		adj[i] = make(map[int]bool)
-	}
-	return adj
+func (g Graph) Adj() []map[int]bool {
+	return g.adj
 }
 
 func (g Graph) AddEdges(dataset source.Dataset, mapper mapping.Mapper, ch channel.Type) {
@@ -35,7 +31,21 @@ func (g Graph) AddEdges(dataset source.Dataset, mapper mapping.Mapper, ch channe
 			ids = mapping[ticket.OrderId]
 		}
 		for _, id := range ids {
-			g.adj[ticket.Id][id] = true
+			customAdd(g.adj, ticket.Id, id)
 		}
 	}
+}
+
+func customAdd(adj []map[int]bool, idx, key int) {
+	if idx != key {
+		adj[idx][key] = true
+	}
+}
+
+func emptyAdj(size int) []map[int]bool {
+	adj := make([]map[int]bool, size)
+	for i := range adj {
+		adj[i] = make(map[int]bool)
+	}
+	return adj
 }
