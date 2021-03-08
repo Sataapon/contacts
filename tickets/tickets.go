@@ -26,8 +26,8 @@ func New(path string) Dataset {
 	return Dataset{Tickets: tickets}
 }
 
-func check(err error) {
-	if err != nil {
-		panic(err)
+func check(e error) {
+	if e != nil {
+		panic(e)
 	}
 }
